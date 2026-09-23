@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>Galaxia - Agujero Negro, Día de las Flores Amarillas</title>
+<title>Galaxia Simple - Agujero Negro, Día de las Flores Amarillas</title>
 <meta name="description" content="Una galaxia sencilla con agujero negro, anillo dorado y fotos flotando entre frases del Día de las Flores Amarillas.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌻</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -259,6 +259,24 @@ addEventListener('touchmove',(e)=>{
 },{passive:false});
 addEventListener('touchend',()=>{pinch=0;},{passive:true});
 
+// Reajuste al girar el celular o redimensionar la ventana: sin esto, el
+// canvas se queda con las medidas de la carga inicial y la escena se ve
+// estirada o cortada tras un cambio de orientación/tamaño.
+let resizeTimeout;
+function onResize(){
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+}
+addEventListener('resize',()=>{
+  clearTimeout(resizeTimeout);
+  resizeTimeout=setTimeout(onResize,150);
+});
+addEventListener('orientationchange',()=>{
+  clearTimeout(resizeTimeout);
+  resizeTimeout=setTimeout(onResize,150);
+});
+
 let t=0;
 function tick(){requestAnimationFrame(tick);t+=0.01;
   ring.rotation.z+=0.003;
@@ -294,3 +312,4 @@ startScreen.addEventListener('click',startExperience);
 </script>
 </body>
 </html>
+
